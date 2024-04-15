@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bouton radio</title>
+  <script>
+    function radio() {
+      var info = document.getElementById("info");
+      var estCochee = '';
+      if (document.getElementById("radbtn1").checked){
+        estCochee = '1';
+      }
+      else if (document.getElementById("radbtn2").checked){
+        estCochee = '2';
+      }
+      const valeur = { radbtn: estCochee };
+      fetch('http://127.0.0.1:5000', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ estCochee: valeur })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Réponse reçue :', data);
+        info.style.display = "block";
+        document.getElementById("rad").innerText = estCochee;
+      })
+      .catch((error) => {
+        console.error('Erreur :', error);
+      });
+    }
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="affichage">
+    <h2>Bouton Radio</h2>
+    <form id="formulaire">
+      Bouton radio Numéro 1 <input type="radio" id="radbtn1" name="radiobtn">
+      Bouton radio Numéro 2 <input type="radio" id="radbtn2" name="radiobtn">
+      <br>
+      <div id="info" class="hide">
+        <p id="result">Le bouton radio choisie est numéro :<span id="rad">0</span></p>
+    </div>
+    <button type="button" onclick="radio()">Valider</button>
+    </form>
+  </div>
+</body>
+</html>
